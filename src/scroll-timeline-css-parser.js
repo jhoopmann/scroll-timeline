@@ -86,7 +86,9 @@ export class StyleParser {
     // If this sheet has no srcURL (like from a <style> tag), we are done.
     // TODO: Otherwise, we have to find `url()` functions and resolve
     // relative and path-absolute URLs to absolute URLs.
-    return p.sheetSrc;
+
+    const { origin } = location;
+    return p.sheetSrc.replace(/url\(("|'?)\.?\//gm, `url($1${origin}/`);
   }
 
   getAnimationTimelineOptions(animationName, target) {
